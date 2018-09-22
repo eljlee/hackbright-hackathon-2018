@@ -1,5 +1,5 @@
-CLIENT_ID = ''
-CLIENT_SECRET = ''
+CLIENT_ID = 'b17c56e6-f400-42c7-81a6-346716ecbc55'
+CLIENT_SECRET = '2ee5b1f9-97ec-44cf-9411-61061c9c3ce2'
 
 import smartcar
 from flask import Flask, request, jsonify
@@ -9,9 +9,11 @@ app = Flask(__name__)
 client = smartcar.AuthClient(
     client_id=CLIENT_ID,
     client_secret=CLIENT_SECRET,
-    redirect_uri='http://localhost:8000/callback',
-    scope=['read_vehicle_info', 'read_location', 'read_odometer']
+    redirect_uri='http://localhost:5000/callback',
+    scope=['read_vehicle_info', 'read_location', 'read_odometer', 'control_security']
 )
+# control_security allows locking and unlocking
+# there's also control_security:unlock and control_security:lock
 
 @app.route('/', methods=['GET'])
 def index():
@@ -33,4 +35,5 @@ def callback():
     return jsonify(access)
 
 if __name__ == '__main__':
-    app.run(port=8000)
+    app.debug = True
+    app.run(host="0.0.0.0")
